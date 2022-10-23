@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
 
- class ColorManger {
-  static  Color primary =const Color(0xffED9728) ;
-  static  Color darkGrey =  const Color(0xff525252);
-  static  Color grey =  const Color(0xff737477) ;
-  static  Color lightGrey =  const Color(0xff9E9E9E) ;
-
-  //dark Color
-  static  Color darkPrimary = const Color(0xffd17d11) ;
-  static  Color lightPrimary = const Color(0xCCd17d11) ;//color with 80percent
-  static const Color grey1 = Color(0xff707070);
-  static const Color grey2 = Color(0xff979797) ;
-  static const Color white = Color(0xffFFFFFF) ;
-  static const Color error = Color(0xffe61f34) ;//red color
-
-  /*
-  0xff ==> 100 color
-  to convert text to color you have two way
-  set as Color
-  or
-  const Color (0xffwith hex)
-   */
+  class ColorManger {
+  static const Color lightScaffoldColor =  Color(0xFFF8F8F8);
+  static const Color grey =  Colors.grey;
+  static const Color blue =  Colors.blue;
+  static Color lightCardColor = const Color(0xFFFfFFFf);
+  static Color black = const Color(0xFF000000);
+  static Color error =  Colors.red;
+  static Color lightBackgroundColor = const Color(0xFFD0E8F2);
+  static Color lightIconsColor = const Color.fromARGB(255, 175, 0, 120);
+  static Color lightTextColor = const Color(0xff324558);
+  static Color linearOne = const Color(0xff7A60A5);
+  static Color linearTwo = const Color(0xff82C3DF);
+  static Color containerColor = const Color(0xff9689CE).withOpacity(0.5);
 }
