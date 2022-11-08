@@ -1,23 +1,36 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:store_rest_api/presentation/home_screen/constants/constant.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:store_rest_api/presentation/feeds_screen/feeds_screen.dart';
+import 'package:store_rest_api/presentation/feeds_screen/widgets/feeds_grid.dart';
+import 'package:store_rest_api/presentation/home_screen/view/widgets/custome_text_field.dart';
+import 'package:store_rest_api/presentation/home_screen/view/widgets/swiper_widget.dart';
 import 'package:store_rest_api/presentation/home_screen/view_model/home_screen_view_model.dart';
-import 'package:store_rest_api/presentation/home_screen/widgets/sale_widget.dart';
 import 'package:store_rest_api/presentation/resources/color_manager.dart';
 import 'package:store_rest_api/presentation/resources/strings_manager.dart';
+import 'package:store_rest_api/presentation/resources/styles_manager.dart';
 import 'package:store_rest_api/presentation/resources/values_manager.dart';
 import 'package:store_rest_api/presentation/shared_widgets/app_bar_widget.dart';
+import 'package:store_rest_api/presentation/user/view/users_screen.dart';
+import 'package:store_rest_api/services/api/api_handler.dart';
+
+import '../../../model/ProductsModel.dart';
+import '../../category/categories_screen.dart';
+
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return HomeScreenState();
+        return HomeScreenState();
   }
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  List<ProductsModel> productsModel = [];
+
   @override
   void initState() {
     HomeScreenViewModel().start();
@@ -33,17 +46,34 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // TODO: implement build
-    return Scaffold(
+       return Scaffold(
       appBar: AppBar(
         title: const Text(
           AppStrings.homePage,
         ),
         leading: AppBarWidget(
           icon: IconlyBold.category,
-          function: () {},
+          function: () {
+            Navigator.push(
+                context,
+                PageTransition(
+                    child: const CategoriesScreen(),
+                    type: PageTransitionType.rotate,
+                    alignment: Alignment.center));
+          },
         ),
-        actions: [AppBarWidget(function: () {}, icon: IconlyBold.user3)],
+        actions: [
+          AppBarWidget(
+              function: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: const UsersScreen(),
+                        type: PageTransitionType.rotate,
+                        alignment: Alignment.center));
+              },
+              icon: IconlyBold.user3)
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppPadding.p14),
@@ -52,29 +82,80 @@ class HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: AppSize.s8,
             ),
-            TextField(
-              controller: HomeScreenViewModel().textEditingController,
-              keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
-                  hintText: AppStrings.search,
-                  suffixIcon: Icon(IconlyLight.search)),
+            const CustomTextField(),
+            const SizedBox(
+              height: AppSize.s8,
+            ),
+            SwiperWidget(size: size, swiperLayout: SwiperLayout.TINDER),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppStrings.allProducts,
+                  style: getRegularStyle(color: ColorManger.lightTextColor),
+                ),
+                AppBarWidget(
+                    function: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: const FeedsScreen(),
+                              type: PageTransitionType.rotate,
+                              alignment: Alignment.center));
+                    },
+                    icon: IconlyLight.arrowRight2),
+              ],
             ),
             const SizedBox(
               height: AppSize.s8,
             ),
-            SizedBox(
-              height: size.height * AppSize.s0_25,
-              child: Swiper(
-                itemCount: itemCount,
-                itemBuilder: (ctx,index){
-                  return  const SaleWidget();
-                },
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    FutureBuilder<List<ProductsModel>>(
+                        future: APIHandler.getAllProducts(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.data == null) {
+                            return const Center(
+                              child: Text('No Products added Yet'),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                              child:
+                                  Text('an error occurred ${snapshot.error}'),
+                            );
+                          }
+                          return FeedsGrid(productsModel: snapshot.data!);
+                        })
+                    //FeedsGrid(productsModel: productsModel)
+                  ],
+                ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
+
+// AppBar buildAppBar() {
+//   return AppBar(
+//     title: const Text(
+//       AppStrings.homePage,
+//     ),
+//     leading: AppBarWidget(
+//       icon: IconlyBold.category,
+//       function: () {
+//         Navigation.push
+//       },
+//     ),
+//     actions: [AppBarWidget(function: () {}, icon: IconlyBold.user3)],
+//   );
+// }
 }
