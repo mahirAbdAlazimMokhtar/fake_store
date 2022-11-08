@@ -3,7 +3,9 @@ import 'package:store_rest_api/presentation/resources/color_manager.dart';
 import 'package:store_rest_api/presentation/resources/strings_manager.dart';
 import 'package:store_rest_api/presentation/resources/values_manager.dart';
 
-import '../../resources/assets_manger.dart';
+import '../../../resources/assets_manger.dart';
+
+
 
 class SaleWidget extends StatelessWidget {
   const SaleWidget({Key? key}) : super(key: key);
