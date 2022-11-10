@@ -4,7 +4,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:store_rest_api/presentation/feeds_screen/feeds_screen.dart';
 import 'package:store_rest_api/presentation/feeds_screen/widgets/feeds_grid.dart';
-import 'package:store_rest_api/presentation/home_screen/view/widgets/custome_text_field.dart';
+import 'package:store_rest_api/presentation/home_screen/view/widgets/custom_text_field.dart';
 import 'package:store_rest_api/presentation/home_screen/view/widgets/swiper_widget.dart';
 import 'package:store_rest_api/presentation/home_screen/view_model/home_screen_view_model.dart';
 import 'package:store_rest_api/presentation/resources/color_manager.dart';
@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  List<ProductsModel> productsModel = [];
+
 
   @override
   void initState() {
@@ -114,7 +114,7 @@ class HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     FutureBuilder<List<ProductsModel>>(
-                        future: APIHandler.getAllProducts(),
+                        future: APIHandler.getAllProducts(limit: '10'),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -131,7 +131,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   Text('an error occurred ${snapshot.error}'),
                             );
                           }
-                          return FeedsGrid(productsModel: snapshot.data!);
+                          return FeedsGrid(productsList: snapshot.data!);
                         })
                     //FeedsGrid(productsModel: productsModel)
                   ],

@@ -6,8 +6,8 @@ import '../../home_screen/constants/constant.dart';
 import 'feeds_widget.dart';
 
 class FeedsGrid extends StatelessWidget {
-  const FeedsGrid({Key? key, required this.productsModel}) : super(key: key);
-  final List<ProductsModel> productsModel;
+  const FeedsGrid({Key? key, required this.productsList}) : super(key: key);
+  final List<ProductsModel> productsList;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class FeedsGrid extends StatelessWidget {
     return GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: productsModel.length,
+        itemCount: productsList.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
           crossAxisSpacing: crossAxisSpacing,
@@ -25,7 +25,7 @@ class FeedsGrid extends StatelessWidget {
         ),
         itemBuilder: (ctx, index) {
           return ChangeNotifierProvider.value(
-            value: productsModel[index],
+            value: productsList[index],
             child: const FeedsWidget(),
           );
         });
